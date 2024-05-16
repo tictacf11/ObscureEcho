@@ -13,10 +13,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] int rows;
     [SerializeField] DynamicGridLayoutGroup cardsGrid;
     [SerializeField] Card cardPrefab;
+    [SerializeField] int scoreByMatch;
 
     List<Card> cards;
     Card currentSelectedCard;
-    int totalPairsNumber; 
+    int totalPairsNumber;
+    int currentScore;
+    int currentCombo;
 
     private void Start()
     {
@@ -27,7 +30,8 @@ public class GameManager : MonoBehaviour
         List<int> cardIds = SelectCardsIds(totalPairsNumber);
         ShuffleCardsIdsList(cardIds);
         SpawnAndInitializeCards(cardIds);
-
+        currentScore = 0;   
+        currentCombo = 1;
     }
 
     // selecting the cards that will used in the puzzle
@@ -95,14 +99,20 @@ public class GameManager : MonoBehaviour
     IEnumerator OnValidMatchRoutine(Card card1, Card card2)
     {
         print("It's a match!");
+        currentScore += currentCombo * scoreByMatch;
+        currentCombo *= 2;
         yield return new WaitForSeconds(.5f);
         card1.enabled = false;
-        card2.enabled = false;
+        card2.enabled = false;        
     }
 
     IEnumerator OnInvalidMatchRoutine(Card card1, Card card2)
     {
         print("It's no match...");
+        if(currentCombo > 1)
+        {
+            currentCombo = 1;
+        }
         yield return new WaitForSeconds(timeToValidateMatch);
         card1.FlipToBack();
         card2.FlipToBack();
