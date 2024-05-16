@@ -16,13 +16,15 @@ public class GameManager : MonoBehaviour
 
     List<Card> cards;
     Card currentSelectedCard;
-    int totalPairsNumber; 
+    int totalPairsNumber;
+    int currentMatches;
 
     private void Start()
     {
         cardsGrid.constraintCount = colums;
         int cardNumber = colums * rows;
         totalPairsNumber = cardNumber / 2;
+        currentMatches = 0; 
 
         List<int> cardIds = SelectCardsIds(totalPairsNumber);
         ShuffleCardsIdsList(cardIds);
@@ -95,9 +97,11 @@ public class GameManager : MonoBehaviour
     IEnumerator OnValidMatchRoutine(Card card1, Card card2)
     {
         print("It's a match!");
+        currentMatches++;
         yield return new WaitForSeconds(.5f);
         card1.enabled = false;
         card2.enabled = false;
+        if (currentMatches >= totalPairsNumber) EndGame(true);
     }
 
     IEnumerator OnInvalidMatchRoutine(Card card1, Card card2)
@@ -106,5 +110,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(timeToValidateMatch);
         card1.FlipToBack();
         card2.FlipToBack();
+    }
+
+    private void EndGame(bool allPairsWereFound)
+    {
+        if (allPairsWereFound) print("Bravo! You matched everything");
+        else print("Time out... better luck next time");
     }
 }
