@@ -1,29 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] float timeToValidateMatch = .5f;
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
-    [SerializeField] List<Card> cards;
 
+    [SerializeField] int colums;
+    [SerializeField] int rows;
+    [SerializeField] GridLayoutGroup cardsGrid;
+    [SerializeField] Card cardPrefab;
+
+    List<Card> cards;
     Card currentSelectedCard;
+    int totalPairsNumber; 
 
     private void Start()
     {
-        SpawnAndInitializeCard(0, 0);
-        SpawnAndInitializeCard(1, 0);
-        SpawnAndInitializeCard(2, 1);
-        SpawnAndInitializeCard(3, 1);
+        cardsGrid.constraintCount = colums;
+        int cardNumber = colums * rows;
+        totalPairsNumber = cardNumber / 2;
+
+        List<int> cardIds = SelectCardsIds(totalPairsNumber);
+        ShuffleCardsIdsList(cardIds);
+        SpawnAndInitializeCards(cardIds);
+
     }
 
-    private void SpawnAndInitializeCard(int cardIndex, int cardId)
+    // selecting the cards that will used in the puzzle
+    private List<int> SelectCardsIds(int numberOfPairs)
     {
-        Card card = cards[cardIndex];
+        List<int> cardIds = new List<int>();
+        for (int i = 0; i < totalPairsNumber; i++)
+        {
+            cardIds.Add(i);
+            cardIds.Add(i);
+        }
+        return cardIds;
+    }
+
+    // shuffle the disposition of cards
+    private void ShuffleCardsIdsList(List<int> cardIds)
+    {
+        for (int i = cardIds.Count - 1; i > 0; i--)
+        {
+            int randomIndex = Random.Range(0, i+1);
+            int tempCardId = cardIds[i];
+            cardIds[i] = cardIds[randomIndex];
+            cardIds[randomIndex] = tempCardId;
+        }
+    }
+
+    private void SpawnAndInitializeCards(List<int> cardIds)
+    {
+        cards = new List<Card>();
+
+        for (int i = 0;i < cardIds.Count; i++)
+        {
+            SpawnAndInitializeCard(cardIds[i]);
+        }
+    }
+
+    private void SpawnAndInitializeCard(int cardId)
+    {
+        Card card = Instantiate(cardPrefab, cardsGrid.transform, false);
         card.Initialize(cardId, cardsBackSprite, cardsSprites[cardId]);
         card.OnCardSelected += OnCardSelected;
+        cards.Add(card);
     }
 
     private void OnCardSelected(Card card)
