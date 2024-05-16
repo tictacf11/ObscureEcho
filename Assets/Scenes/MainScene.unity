@@ -153,7 +153,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1119543460}
+  - {fileID: 1858327089}
   m_Father: {fileID: 2129969152}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -247,9 +247,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f16f391004d949f45acdf41a48c8fcfd, type: 3}
   - {fileID: 21300000, guid: 8e0d9078c504dac469ce9a22c1172686, type: 3}
   cardsBackSprite: {fileID: 21300000, guid: 09c1ae874a4029344aa1d92392906cbd, type: 3}
-  colums: 3
-  rows: 2
-  cardsGrid: {fileID: 1119543461}
+  colums: 5
+  rows: 6
+  cardsGrid: {fileID: 1858327088}
   cardPrefab: {fileID: 5727990839123248632, guid: effb40eae06e0904ab757c41c0d4dbbe, type: 3}
 --- !u!4 &369812233
 Transform:
@@ -418,7 +418,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1119543459
+--- !u!1 &1858327087
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,8 +426,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1119543460}
-  - component: {fileID: 1119543461}
+  - component: {fileID: 1858327089}
+  - component: {fileID: 1858327088}
   m_Layer: 5
   m_Name: Puzzle Grid
   m_TagString: Untagged
@@ -435,13 +435,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1119543460
+--- !u!114 &1858327088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858327087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed63cc866bb74a4083eb43bfd043c26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 238.66667, y: 358}
+  m_Spacing: {x: 10, y: 10}
+  m_Constraint: 1
+  m_ConstraintCount: 1
+  m_Columns: 1
+  m_Rows: 1
+  m_CellAspectRatio: 0.6666667
+--- !u!224 &1858327089
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119543459}
+  m_GameObject: {fileID: 1858327087}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -455,30 +482,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1119543461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119543459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 66.6667, y: 100}
-  m_Spacing: {x: 14, y: 14}
-  m_Constraint: 1
-  m_ConstraintCount: 5
 --- !u!1 &2129969148
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] int colums;
     [SerializeField] int rows;
-    [SerializeField] GridLayoutGroup cardsGrid;
+    [SerializeField] DynamicGridLayoutGroup cardsGrid;
     [SerializeField] Card cardPrefab;
 
     List<Card> cards;
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        cardsGrid.constraintCount = colums;
+        cardsGrid.UpdateCellSizeByRowsAndColumns(rows, colums);
         int cardNumber = colums * rows;
         totalPairsNumber = cardNumber / 2;
 
