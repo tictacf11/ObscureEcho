@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
 
-    [SerializeField] int colums;
+    [SerializeField] int columns;
     [SerializeField] int rows;
     [SerializeField] DynamicGridLayoutGroup cardsGrid;
     [SerializeField] Card cardPrefab;
@@ -23,19 +25,39 @@ public class GameManager : MonoBehaviour
 
     int currentScore;
     int currentCombo;
+    private string saveFilePath;
+    private bool gameHasEnded = false;
 
     private void Start()
     {
-        cardsGrid.UpdateCellSizeByRowsAndColumns(rows, colums);
-        int cardNumber = colums * rows;
-        totalPairsNumber = cardNumber / 2;
-        currentMatches = 0; 
+        saveFilePath = Path.Combine(Application.persistentDataPath, "savefile.dat");
 
+        if (File.Exists(saveFilePath))
+        {
+            LoadGame();
+        }
+        else
+        {
+            InitializeBoard();
+            InitializeCards();
+            currentMatches = 0;
+            currentScore = 0;
+            currentCombo = 1;
+        }
+    }
+
+    private void InitializeBoard()
+    {
+        cardsGrid.UpdateCellSizeByRowsAndColumns(rows, columns);
+        int cardNumber = columns * rows;
+        totalPairsNumber = cardNumber / 2;
+    }
+
+    private void InitializeCards()
+    {
         List<int> cardIds = SelectCardsIds(totalPairsNumber);
         ShuffleCardsIdsList(cardIds);
         SpawnAndInitializeCards(cardIds);
-        currentScore = 0;   
-        currentCombo = 1;
     }
 
     // selecting the cards that will used in the puzzle
@@ -55,7 +77,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = cardIds.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i+1);
+            int randomIndex = Random.Range(0, i + 1);
             int tempCardId = cardIds[i];
             cardIds[i] = cardIds[randomIndex];
             cardIds[randomIndex] = tempCardId;
@@ -66,7 +88,7 @@ public class GameManager : MonoBehaviour
     {
         cards = new List<Card>();
 
-        for (int i = 0;i < cardIds.Count; i++)
+        for (int i = 0; i < cardIds.Count; i++)
         {
             SpawnAndInitializeCard(cardIds[i]);
         }
@@ -83,7 +105,7 @@ public class GameManager : MonoBehaviour
     private void OnCardSelected(Card card)
     {
         card.FlipToFront();
-        if(!currentSelectedCard) 
+        if (!currentSelectedCard)
         {
             currentSelectedCard = card;
         }
@@ -105,20 +127,24 @@ public class GameManager : MonoBehaviour
         print("It's a match!");
 
         currentMatches++;
+        bool gameEnded = currentMatches >= totalPairsNumber;
         currentScore += currentCombo * scoreByMatch;
         uiController?.UpdateScore(currentScore, currentCombo);
         currentCombo *= 2;
 
+        card1.IsMatched = true;
+        card2.IsMatched = true;
+
         yield return new WaitForSeconds(.5f);
         card1.enabled = false;
         card2.enabled = false;
-        if (currentMatches >= totalPairsNumber) EndGame(true);
+        if (gameEnded) EndGame(true);
     }
 
     IEnumerator OnInvalidMatchRoutine(Card card1, Card card2)
     {
         print("It's no match...");
-        if(currentCombo > 1)
+        if (currentCombo > 1)
         {
             currentCombo = 1;
             uiController?.UpdateScore(currentScore, currentCombo);
@@ -132,5 +158,81 @@ public class GameManager : MonoBehaviour
     {
         if (allPairsWereFound) print("Bravo! You matched everything");
         else print("Time out... better luck next time");
+        gameHasEnded = true;
+        File.Delete(saveFilePath);
     }
+
+    private void OnApplicationQuit()
+    {
+        if (!gameHasEnded) SaveGame();
+    }
+
+    private void SaveGame()
+    {
+        int[] cardIds = new int[rows * columns];
+        int[] disabledCardsIndexes = new int[currentMatches * 2];
+
+        for (int i = 0, j = 0; i < cards.Count; i++)
+        {
+            cardIds[i] = cards[i].CardId;
+            if (cards[i].IsMatched)
+            {
+                disabledCardsIndexes[j] = i;
+                j++;
+            }
+        }
+
+        GameState gameState = new GameState()
+        {
+            columns = columns,
+            rows = rows,
+            score = currentScore,
+            combo = currentCombo,
+            cardIds = cardIds,
+            disabledCardsIndexes = disabledCardsIndexes,
+        };
+
+        using (FileStream fs = new FileStream(saveFilePath, FileMode.Create))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fs, gameState);
+        }
+    }
+
+    private void LoadGame()
+    {
+        using (FileStream fs = new FileStream(saveFilePath, FileMode.Open))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            GameState gameState = (GameState)formatter.Deserialize(fs);
+
+            rows = gameState.rows;
+            columns = gameState.columns;
+            InitializeBoard();
+
+            SpawnAndInitializeCards(gameState.cardIds.ToList());
+            currentMatches = gameState.disabledCardsIndexes.Length / 2;
+            for (int i = 0; i < gameState.disabledCardsIndexes.Length; i++)
+            {
+                cards[gameState.disabledCardsIndexes[i]].enabled = false;
+            }
+
+            currentScore = gameState.score;
+            currentCombo = gameState.combo;
+            uiController.UpdateScore(currentScore, currentCombo / 2);
+
+        }
+    }
+}
+
+[System.Serializable]
+public class GameState
+{
+    public int columns;
+    public int rows;
+    public int score;
+    public int combo;
+    public int[] cardIds;
+    public int[] disabledCardsIndexes;
+    public Random.State randomState;
 }
