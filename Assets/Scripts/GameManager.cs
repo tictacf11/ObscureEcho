@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
         card1.IsMatched = true;
         card2.IsMatched = true;
 
+        AudioManager.instance.PlaySound(AudioManager.instance.matchSound);
         yield return new WaitForSeconds(timeToValidateMatch);        
         if (gameEnded) EndGame(true);
     }
@@ -152,6 +153,7 @@ public class GameManager : MonoBehaviour
             currentCombo = 1;
             uiController?.UpdateScore(currentScore, currentCombo);
         }
+        AudioManager.instance.PlaySound(AudioManager.instance.mismatchSound);
         yield return new WaitForSeconds(timeToValidateMatch);
         card1.FlipToBack();
         card2.FlipToBack();
@@ -162,6 +164,7 @@ public class GameManager : MonoBehaviour
         if (allPairsWereFound) print("Bravo! You matched everything");
         else print("Time out... better luck next time");
         gameHasEnded = true;
+        AudioManager.instance.PlaySound(AudioManager.instance.gameOverSound);
         File.Delete(saveFilePath);
     }
 

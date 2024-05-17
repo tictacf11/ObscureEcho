@@ -56,6 +56,7 @@ public class Card : MonoBehaviour
             onFlipEnd,
             false
             );
+        AudioManager.instance.PlaySound(AudioManager.instance.flipSound);
     }
 
     public void FlipToBack(Action onFlipEnd = null)
@@ -67,6 +68,7 @@ public class Card : MonoBehaviour
             () => image.sprite = backImageSprite,
             onFlipEnd
             );
+        AudioManager.instance.PlaySound(AudioManager.instance.flipSound);
     }
 
     private void OnDisable()
