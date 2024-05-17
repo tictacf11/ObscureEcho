@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] UIController uiController;
     [SerializeField] float timeToValidateMatch = .5f;
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
@@ -102,9 +103,12 @@ public class GameManager : MonoBehaviour
     IEnumerator OnValidMatchRoutine(Card card1, Card card2)
     {
         print("It's a match!");
+
         currentMatches++;
         currentScore += currentCombo * scoreByMatch;
+        uiController?.UpdateScore(currentScore, currentCombo);
         currentCombo *= 2;
+
         yield return new WaitForSeconds(.5f);
         card1.enabled = false;
         card2.enabled = false;
@@ -117,6 +121,7 @@ public class GameManager : MonoBehaviour
         if(currentCombo > 1)
         {
             currentCombo = 1;
+            uiController?.UpdateScore(currentScore, currentCombo);
         }
         yield return new WaitForSeconds(timeToValidateMatch);
         card1.FlipToBack();

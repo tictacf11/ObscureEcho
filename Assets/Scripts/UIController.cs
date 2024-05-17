@@ -9,12 +9,12 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreText.text = 0 + "";
-        comboText.text = "";
+        UpdateScore(0, 1);
     }
 
     public void UpdateScore(int score, int combo)
     {
-        score.text = score + "";
+        scoreText.text = score + "";
+        comboText.text = combo > 1 ? "x" + combo : "";
     }
 }
