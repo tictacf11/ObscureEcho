@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
 
-    [SerializeField] int columns;
-    [SerializeField] int rows;
+    [SerializeField] BoardConfiguration boardConfiguration;
+    int columns;
+    int rows;
     [SerializeField] DynamicGridLayoutGroup cardsGrid;
     [SerializeField] Card cardPrefab;
     [SerializeField] int scoreByMatch;
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            rows = boardConfiguration.rows;
+            columns = boardConfiguration.columns;
             InitializeBoard();
             InitializeCards();
             currentMatches = 0;
