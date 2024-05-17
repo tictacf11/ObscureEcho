@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
-    [NonSerialized]public int CardId;
+    [NonSerialized] public int CardId;
     [NonSerialized] public bool IsMatched;
     bool isFaceDown = true;
     Image image;
@@ -14,11 +13,13 @@ public class Card : MonoBehaviour
     Sprite frontImageSprite;
     Button button;
     public Action<Card> OnCardSelected;
+    CardAnimator animator;
 
     private void Awake()
     {
         image = GetComponent<Image>();
         button = GetComponent<Button>();
+        animator = GetComponent<CardAnimator>();
 
         button.onClick.AddListener(SelectCard);
     }
@@ -37,20 +38,27 @@ public class Card : MonoBehaviour
         OnCardSelected?.Invoke(this);
     }
 
-    public void FlipToFront()
+    public void FlipToFront(Action onFlipEnd = null)
     {
-        if(!isFaceDown) return;
+        if (!isFaceDown) return;
         button.enabled = false;
         isFaceDown = false;
-        image.sprite = frontImageSprite;
+        animator.Flip(
+            () => image.sprite = frontImageSprite,
+            onFlipEnd,
+            false
+            );
     }
 
-    public void FlipToBack()
+    public void FlipToBack(Action onFlipEnd = null)
     {
-        if(isFaceDown) return;
+        if (isFaceDown) return;
         isFaceDown = true;
-        image.sprite = backImageSprite;
-        button.enabled = true;
+        onFlipEnd += () => button.enabled = true;
+        animator.Flip(
+            () => image.sprite = backImageSprite,
+            onFlipEnd
+            );
     }
 
     private void OnDisable()
