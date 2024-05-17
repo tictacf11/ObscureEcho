@@ -148,3 +148,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flipAnimationTime: 0.25
+  matchAnimationTime: 0.2
+  afterMatchAnimationTime: 0.2

@@ -8,7 +8,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] UIController uiController;
-    [SerializeField] float timeToValidateMatch = .5f;
+    [SerializeField] float timeToValidateMatch = .2f;
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
 
@@ -104,15 +104,20 @@ public class GameManager : MonoBehaviour
 
     private void OnCardSelected(Card card)
     {
-        card.FlipToFront();
         if (!currentSelectedCard)
         {
+            card.FlipToFront();
             currentSelectedCard = card;
         }
         else
         {
-            if (IsAMatch(card)) StartCoroutine(OnValidMatchRoutine(card, currentSelectedCard));
-            else StartCoroutine(OnInvalidMatchRoutine(card, currentSelectedCard));
+            bool thereIsAMach = IsAMatch(card);
+            Card previousSelectedCard = currentSelectedCard;
+            card.FlipToFront(() =>
+            {
+                if (thereIsAMach) StartCoroutine(OnValidMatchRoutine(card, previousSelectedCard));
+                else StartCoroutine(OnInvalidMatchRoutine(card, previousSelectedCard));
+            });
             currentSelectedCard = null;
         }
     }
@@ -135,9 +140,7 @@ public class GameManager : MonoBehaviour
         card1.IsMatched = true;
         card2.IsMatched = true;
 
-        yield return new WaitForSeconds(.5f);
-        card1.enabled = false;
-        card2.enabled = false;
+        yield return new WaitForSeconds(timeToValidateMatch);        
         if (gameEnded) EndGame(true);
     }
 

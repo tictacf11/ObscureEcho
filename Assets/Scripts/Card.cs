@@ -6,7 +6,15 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
     [NonSerialized] public int CardId;
-    [NonSerialized] public bool IsMatched;
+    private bool isMatched;
+    public bool IsMatched {
+        get => isMatched;
+        set
+        {
+            isMatched = value;
+            if(value) animator?.Match(() => enabled = false);
+        }
+    }
     bool isFaceDown = true;
     Image image;
     Sprite backImageSprite;
@@ -63,7 +71,7 @@ public class Card : MonoBehaviour
 
     private void OnDisable()
     {
-        IsMatched = true;
+        isMatched = true;
         image.enabled = false;
         button.enabled = false;
     }
