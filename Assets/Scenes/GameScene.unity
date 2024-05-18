@@ -897,34 +897,10 @@ MonoBehaviour:
   offImage: {fileID: 21300000, guid: a7e1e81117197488db394021a1b04920, type: 3}
   OnSetOn:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1592175985}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: Unmute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnSetOff:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1592175985}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: Mute
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &390330587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2265,7 +2241,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 1040, y: 1560}
+  m_CellSize: {x: 620.5333, y: 930.8}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 1
@@ -2586,3 +2562,4 @@ MonoBehaviour:
   comboText: {fileID: 21573096}
   gameOverPanel: {fileID: 1078092004}
   finalScoreDisplay: {fileID: 1531528191}
+  audioButton: {fileID: 390330586}

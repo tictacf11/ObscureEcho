@@ -9,11 +9,18 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TextMeshProUGUI finalScoreDisplay;
+    [SerializeField] private OnOffButton audioButton;
 
     // Start is called before the first frame update
     void Awake()
     {
         UpdateScore(0, 1);
+        if(audioButton != null)
+        {
+            audioButton.IsOn = !AudioManager.instance.IsMuted;
+            audioButton.OnSetOn.AddListener(AudioManager.instance.Unmute);
+            audioButton.OnSetOff.AddListener(AudioManager.instance.Mute);
+        }  
     }
 
     public void UpdateScore(int score, int combo)

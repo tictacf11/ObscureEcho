@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] int audioSourcePoolSize = 4; 
     private List<AudioSource> audioSourcePool;
     private bool isMuted = false;
+    public bool IsMuted => isMuted;
 
     void Awake()
     {
