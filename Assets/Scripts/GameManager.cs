@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
         else print("Time out... better luck next time");
         gameHasEnded = true;
         AudioManager.instance.PlaySound(AudioManager.instance.gameOverSound);
-        File.Delete(saveFilePath);
+        uiController.DisplayGameOverPanel();
     }
 
     private void OnApplicationQuit()
@@ -231,5 +231,6 @@ public class GameManager : MonoBehaviour
             uiController.UpdateScore(currentScore, currentCombo / 2);
 
         }
+        File.Delete(saveFilePath);
     }
 }
