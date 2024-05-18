@@ -656,6 +656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08c17febc97fff40a3eaadb5918009d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameConfiguration: {fileID: 11400000, guid: 5e0c5626ea9f8f84686222f623369f1b, type: 2}
   uiController: {fileID: 2129969153}
   timeToValidateMatch: 0.5
   cardsSprites:
@@ -675,7 +676,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f16f391004d949f45acdf41a48c8fcfd, type: 3}
   - {fileID: 21300000, guid: 8e0d9078c504dac469ce9a22c1172686, type: 3}
   cardsBackSprite: {fileID: 21300000, guid: 09c1ae874a4029344aa1d92392906cbd, type: 3}
-  boardConfiguration: {fileID: 11400000, guid: b193da18dc1afd8428eabafd1c98590e, type: 2}
   cardsGrid: {fileID: 1858327088}
   cardPrefab: {fileID: 5727990839123248632, guid: effb40eae06e0904ab757c41c0d4dbbe, type: 3}
   scoreByMatch: 100

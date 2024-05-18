@@ -7,12 +7,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameConfiguration gameConfiguration;
     [SerializeField] UIController uiController;
     [SerializeField] float timeToValidateMatch = .2f;
     [SerializeField] List<Sprite> cardsSprites;
     [SerializeField] Sprite cardsBackSprite;
 
-    [SerializeField] BoardConfiguration boardConfiguration;
     int columns;
     int rows;
     [SerializeField] DynamicGridLayoutGroup cardsGrid;
@@ -33,20 +33,22 @@ public class GameManager : MonoBehaviour
     {
         saveFilePath = Path.Combine(Application.persistentDataPath, "savefile.dat");
 
-        if (File.Exists(saveFilePath))
+        if (gameConfiguration.loadGame && File.Exists(saveFilePath))
         {
             LoadGame();
         }
         else
         {
-            rows = boardConfiguration.rows;
-            columns = boardConfiguration.columns;
+            rows = gameConfiguration.boardConfig.rows;
+            columns = gameConfiguration.boardConfig.columns;
             InitializeBoard();
             InitializeCards();
             currentMatches = 0;
             currentScore = 0;
             currentCombo = 1;
         }
+        File.Delete(saveFilePath);
+
     }
 
     private void InitializeBoard()
@@ -231,6 +233,5 @@ public class GameManager : MonoBehaviour
             uiController.UpdateScore(currentScore, currentCombo / 2);
 
         }
-        File.Delete(saveFilePath);
     }
 }
