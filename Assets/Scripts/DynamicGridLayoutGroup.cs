@@ -29,18 +29,19 @@ public class DynamicGridLayoutGroup : GridLayoutGroup
         float width = rectTransform.rect.width - horizontalPadding - horizontalSpacing;
         float height = rectTransform.rect.height - verticalPadding - verticalSpacing;
 
-        float cellWidth = 0;
-        float cellHeight = 0;
+        float cellWidth = width / columns;
+        float cellHeight = height / rows;
 
-        if(m_CellAspectRatio < 1)
+        float aspectRatioHeight = cellWidth / m_CellAspectRatio;
+        float aspectRatioWidth = cellHeight * m_CellAspectRatio;
+
+        if (aspectRatioHeight <= cellHeight)
         {
-            cellHeight = height / rows;
-            cellWidth = cellHeight * m_CellAspectRatio;
+            cellHeight = aspectRatioHeight;
         }
         else
         {
-            cellWidth = width / columns;
-            cellHeight = cellWidth / m_CellAspectRatio;
+            cellWidth = aspectRatioWidth;
         }
 
         cellSize = new Vector2(cellWidth, cellHeight);
