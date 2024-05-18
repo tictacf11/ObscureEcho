@@ -48,10 +48,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void ToggleMute()
+    public void Mute()
     {
-        isMuted = !isMuted;
+        isMuted = true;
+        foreach (AudioSource source in audioSourcePool) source.Stop();
     }
+
+    public void Unmute() => isMuted = false;
 
     private AudioSource GetAvailableAudioSource()
     {

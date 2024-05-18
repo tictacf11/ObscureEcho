@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
         if (!gameHasEnded) SaveGame();
     }
 
-    private void SaveGame()
+    public void SaveGame()
     {
         int[] cardIds = new int[rows * columns];
         int[] disabledCardsIndexes = new int[currentMatches * 2];
