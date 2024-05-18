@@ -173,6 +173,16 @@ public class GameManager : MonoBehaviour
         if (!gameHasEnded) SaveGame();
     }
 
+    private void OnApplicationPause(bool pause)
+    {
+        if (!gameHasEnded)
+        {
+            if (pause) SaveGame();
+            else File.Delete(saveFilePath);
+        }
+
+    }
+
     public void SaveGame()
     {
         int[] cardIds = new int[rows * columns];

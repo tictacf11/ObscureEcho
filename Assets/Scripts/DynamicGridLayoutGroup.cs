@@ -13,6 +13,12 @@ public class DynamicGridLayoutGroup : GridLayoutGroup
         UpdateCellSizeByRowsAndColumns(m_Rows, m_Columns);
     }
 
+    protected override void OnRectTransformDimensionsChange()
+    {
+        base.OnRectTransformDimensionsChange();
+        UpdateCellSizeByRowsAndColumns(m_Rows, m_Columns);
+    }
+
     public void UpdateCellSizeByRowsAndColumns(int rows, int columns)
     {
         constraint = Constraint.FixedColumnCount;
