@@ -63,6 +63,9 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        return null;
+        AudioSource audioSource = audioSourcePool[0];
+        audioSourcePool.RemoveAt(0);
+        audioSourcePool.Add(audioSource);
+        return audioSource;
     }
 }

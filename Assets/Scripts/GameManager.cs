@@ -134,8 +134,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator OnValidMatchRoutine(Card card1, Card card2)
     {
-        print("It's a match!");
-
         currentMatches++;
         bool gameEnded = currentMatches >= totalPairsNumber;
         currentScore += currentCombo * scoreByMatch;
@@ -152,7 +150,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator OnInvalidMatchRoutine(Card card1, Card card2)
     {
-        print("It's no match...");
         if (currentCombo > 1)
         {
             currentCombo = 1;
@@ -166,8 +163,6 @@ public class GameManager : MonoBehaviour
 
     private void EndGame(bool allPairsWereFound)
     {
-        if (allPairsWereFound) print("Bravo! You matched everything");
-        else print("Time out... better luck next time");
         gameHasEnded = true;
         AudioManager.instance.PlaySound(AudioManager.instance.gameOverSound);
         uiController.DisplayGameOverPanel();
